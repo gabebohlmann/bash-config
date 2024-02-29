@@ -1,0 +1,95 @@
+# cd file selector ordered with vim like bindings to select 
+cds() {
+    local show_hidden=false
+    if [[ "$1" == "-a" ]]; then
+        show_hidden=true
+        shift
+    fi
+
+    local keys=('a' 's' 'd' 'f' 'g' 'h' 'j' 'k' 'l' ';' 'q' 'w' 'e' 'r' 't' 'y' 'u' 'i' 'o' 'p' 'z' 'x' 'c' 'v' 'b' 'n' 'm')
+    local items=()
+    local dir_color="\033[1;34m"
+    local nc="\033[0m"
+
+    if [[ "$show_hidden" == true ]]; then
+        while IFS= read -r line; do items+=("/$line"); done < <(find . -maxdepth 1 -type d -print | sed 's|^\./||' | sort)
+        while IFS= read -r line; do items+=("$line"); done < <(find . -maxdepth 1 ! -type d -print | sed 's|^\./||' | sort)
+    else
+        while IFS= read -r line; do items+=("/$line"); done < <(find . -maxdepth 1 -type d ! -name '.*' -print | sed 's|^\./||' | sort)
+        while IFS= read -r line; do items+=("$line"); done < <(find . -maxdepth 1 ! -type d ! -name '.*' -print | sed 's|^\./||' | sort)
+    fi
+
+    for i in "${!items[@]}"; do
+        if [[ -n "${keys[i]}" ]]; then
+            if [[ "${items[i]}" == /* ]]; then
+                printf "%b%s: %s%b\n" "$dir_color" "${keys[i]}" "${items[i]}" "$nc"
+            else
+                printf "%s: %s\n" "${keys[i]}" "${items[i]}"
+            fi
+        else
+            break
+        fi
+    done
+
+    # Prompt user for selection
+    read -p "Enter the key of the file/directory to open: " user_key
+    local selection=""
+    
+    for i in "${!keys[@]}"; do
+        if [[ "${user_key}" == "${keys[i]}" ]]; then
+            selection="${items[i]}"
+            break
+        fi
+    done
+
+    # Validate selection
+    if [[ -z "$selection" ]]; then
+        echo "Invalid selection"
+        return 1
+    fi
+
+    # Check if the selection is a directory or a file and act accordingly
+    if [[ "$selection" == /* ]]; then
+        cd -- "${selection:1}"
+    elif [[ -d "${selection#/}" ]]; then
+        cd -- "${selection#/}"
+    elif [[ -f "${selection}" ]]; then
+        vim "$selection"
+    else
+        echo "Selection is neither a file nor a directory"
+    fi
+}
+
+# opens cwd from ranger file explorer in terminal on :q (quit)
+function rcd() {
+  tempfile="$(mktemp)"
+  ranger --choosedir="$tempfile" "${@:-$(pwd)}"
+  if chosen_dir="$(cat "$tempfile")"; then
+    [ -d "${chosen_dir}" ] && cd "${chosen_dir}"
+  fi
+  rm -f "$tempfile"
+}
+
+# opens cwd from ranger file explorer in windows file explorer on :q (quit)
+function re() {
+  tempfile="$(mktemp)"
+  ranger --choosedir="$tempfile" "${@:-$(pwd)}"
+  if chosen_dir="$(cat "$tempfile")"; then
+    if [ -d "${chosen_dir}" ]; then
+      # Convert the Linux path to Windows format and open it with explorer.exe
+      explorer.exe "$(wslpath -w "${chosen_dir}")"
+    fi
+  fi
+  rm -f "$tempfile"
+}
+
+# google search
+g() {
+    local query=$(echo "$@" | sed 's/ /+/g')
+    # Temporarily change directory to C:\ (or another Windows-native path) to avoid UNC path error
+    pushd /mnt/c > /dev/null 2>&1
+    cmd.exe /C start "https://www.google.com/search?q=$query"
+    # Return to the previous directory
+    popd > /dev/null 2>&1
+}
+
