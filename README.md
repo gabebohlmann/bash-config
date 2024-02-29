@@ -10,7 +10,7 @@ Copy the text in bash-config.txt and paste into your .bashrc.  Update your bash 
 
 1. Install `ranger`
 
-'sudo apt install ranger`
+`sudo apt install ranger`
 
 2. Adding Functions to .bashrc
 
@@ -27,26 +27,26 @@ bash
 $ `source ~/.bashrc`
 
 ## Function Descriptions and Usage
-1. cds: CD with File Selector
+1. `cds`: CD with File Selector
 
     Purpose: Navigate through directories or open files directly from the command line, with optional support for hidden files. Uses home row first key bindings for index selection. 
     Usage:
         To use the file selector, simply type cds in your terminal.
         For including hidden files in the list, use cds -a.
 
-2. rcd: Open CWD from Ranger in Terminal
+2. `rcd`: Open CWD from Ranger in Terminal
 
     Purpose: Launch the Ranger file explorer from the current working directory (CWD) and return to the terminal in the selected directory upon exiting Ranger.
     Usage:
         Type rcd to open Ranger. Navigate to your desired directory, then quit Ranger (:q) to change your terminal's current directory to the selected one.
 
-3. re: Open CWD from Ranger in Windows File Explorer
+3. `re`: Open CWD from Ranger in Windows File Explorer
 
     Purpose: Similar to rcd, but opens the selected directory in Windows File Explorer, useful for WSL users.
     Usage:
         Type re to launch Ranger. Navigate and select your directory, then quit Ranger to open it in Windows File Explorer.
 
-4. g: Google Search
+4. `g`: Google Search
 
     Purpose: Perform a Google search directly from your terminal.
     Usage:
