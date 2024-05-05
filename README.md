@@ -1,7 +1,7 @@
 # .bashrc Functions
 
 Enhance your terminal experience with these .bashrc functions. 
-Add file select for cd with `cds`, `cd` in terminal to the `ranger` current working directory on quit with `rcd`, open file explorer in the ranger current working directory on quit with `re` and search with google in new tab in default browser with `g`.
+Add file select for cd with `cds`, `cd` in terminal to the `ranger` current working directory on quit with `rcd`, open file explorer in the ranger current working directory on quit with `re`, and search with google in new tab in default browser with `g`.
 
 
 Copy the text in bash-config.txt and paste into your .bashrc.  Update your bash config with $`. ~/.bashrc` to get started 
