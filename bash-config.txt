@@ -6,7 +6,7 @@ cds() {
         shift
     fi
 
-    local keys=('a' 's' 'd' 'f' 'g' 'h' 'j' 'k' 'l' ';' 'q' 'w' 'e' 'r' 't' 'y' 'u' 'i' 'o' 'p' 'z' 'x' 'c' 'v' 'b' 'n' 'm')
+    local keys=('a' 'r' 's' 't' 'd' 'h' 'n' 'e' 'i' 'o' 'q' 'w' 'f' 'p' 'g' 'j' 'l' 'u' 'y' ';' 'z' 'x' 'c' 'v' 'b' 'k' 'm')
     local items=()
     local dir_color="\033[1;34m"
     local nc="\033[0m"
